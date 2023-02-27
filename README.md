@@ -1,2 +1,0 @@
-# ProjetoRocketSeat
-Projeto da rocketseat
