@@ -27,7 +27,8 @@ button{
     transition:filter 0.2s; //Toda vez que o filte do meu botão for alterado, vou fazer uma transição de 0.2s
     &:hover{
         //filter:blur(5px)
-        filter:brightness(0.9)  //O brightness escurece um poquinho o elemento , assim eu não preciso procurar uma cor mais clara para passar no css
+        filter:brightness(0.9);//O brightness escurece um poquinho o elemento , assim eu não preciso procurar uma cor mais clara para passar no css
+        
     }
     //Perceba como funciona o hover no styledComponent , eu preciso passar o hover dentro do botão para ativar a funcionalidade
     //Utilize a tag filter para estilizações mais maneiras como, o blur(30px) que vai embassar o botão completamente

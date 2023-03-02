@@ -39,6 +39,7 @@ html{
 body{
     background-color: var(--background); //Estou pegando as variveis do root
     -webkit-font-smoothing:antialiased;  //No chrome as fontes vão ficar mais nitidas
+    
 }
 
 body, input, textarea, button {
@@ -64,7 +65,15 @@ button{
     opacity:0.6;
     cursor:not-allowed;   //Todo elemento disabled na nossa aplicação vai ficar transparente, e vai aparecer a mensagem not-allowed
 }
+
+
 `
+
+
+
+//Perceba que eu optei por uma estilização própria minha no meu modal, então eu trouxe as minhas classes que eu coloquei la no modal segundo a documentação para estilizar ela própria(Como o modal é basicamente o mesmo para todas as telas, eu estou fazendo de forma global e não diretamente no arquivo de estilo do modal)
+
+
 
 
 
