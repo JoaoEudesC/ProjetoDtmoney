@@ -1,4 +1,4 @@
-import { TrasactionTable } from "../../TransactionsTable";
+import { TrasactionTable } from "../TransactionsTable";
 import { Summary } from "../Summary";
 import { Container } from "./styles";
 

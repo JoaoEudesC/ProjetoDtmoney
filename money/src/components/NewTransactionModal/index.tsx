@@ -1,16 +1,21 @@
-//Aqui é onde a gente vai estilizar o nosso modal, mas nos não queremos jogar um monte de html lá dentro do modal no app.tsx, vamos fazer aqui e mudar para lá(Uma boa prática)
-
-//Aqui novamente eu vou utilizar o conceito de props, para passar o estado e a função via props para estes elementos através de uma interface.
-//Precisei utilizar os conceitos de props aqui , devido a criação de um arquivo somente para o modal, então primeiro eu transferi o Modal do header para o app.tsx e depois transferi o modal do app.tsx para este arquivo separado
-//Em ambos os casos precisei passar props, passei uma para o header , que é a função de abrir o modal e agora vou passar estas duas props para ca
-
+//Importação do modal
 import Modal from "react-modal";
-import { Container } from "./style";
+
+//Importação da api
+import { api } from "../../services/api";
+
+//Importação de estilos
+import { Container, TransactionTypeContainer, RadioBox } from "./style";
+
+//Importação de imagens
+import incomeImg from "../../Assets/income.svg";
+import outcomeImg from "../../Assets/outcome.svg";
 
 //Importação de icones
 import closeImage from "../../Assets/close.svg";
+import { FormEvent, useState } from "react";
 
-//Importação de de funções do modal
+//Importação de de funções do modal através de props do app.tsx
 interface modal {
   onCloseNewTransactionModal: () => void;
   isNewTransactionModalOpen: boolean;
@@ -20,6 +25,27 @@ export function NewTransactionModal({
   onCloseNewTransactionModal,
   isNewTransactionModalOpen,
 }: modal) {
+  //Criação de estado para armazenar a informação de qual botão foi clicado pelo usuário
+  const [title, setTitle] = useState(""); //O valor em string do input vai começar vazio
+  const [value, setValue] = useState(0); //O valor numerico do input vai começar vazio
+  const [category, setCategory] = useState("");
+  const [type, setType] = useState("deposit");
+
+  function handleCreateNewTransaction(e: FormEvent) {
+    e.preventDefault();
+    const data = {
+      title,
+      value,
+      category,
+      type,
+    }; //Repare que eu posso dar um console.log em vários elementos ao mesmo tempo
+    api.post("transactions", data);
+
+    setTitle("");
+    setValue(0);
+    setCategory("");
+  }
+
   return (
     <Modal
       //Estilização do modal
@@ -48,7 +74,7 @@ export function NewTransactionModal({
         },
       }}
     >
-      <Container>
+      <Container onSubmit={handleCreateNewTransaction}>
         <button
           type="button"
           onClick={onCloseNewTransactionModal}
@@ -56,24 +82,63 @@ export function NewTransactionModal({
         >
           <img src={closeImage} alt="Icone de fechar modal" />
         </button>
-
         <h2>Cadastrar transação</h2>
-        <input type="text" placeholder="Titulo" />
-        <input type="number" placeholder="Valor" />
-        <input type="text" name="Categoria" placeholder="Categoria" />
+        <input
+          type="text"
+          placeholder="Titulo"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Valor"
+          value={value}
+          onChange={(e) => setValue(Number(e.target.value))}
+        />
+
+        <TransactionTypeContainer>
+          <RadioBox
+            type="button"
+            onClick={() => setType("deposit")}
+            //Eu basicamente estou dizendo que quando a propriedade isActive for true, eu quero que o type dela seja deposit(e vou estilizar com base nisso)
+            //A gente pode passar propriedades quando estamos utilizando o styled-component(Quando estamos utilizando ts, ele vai dizer que não existe essa propriedade no html element, por isso nos temos que criar uma interface no styled.ts e tipar ela lá)
+            isActive={type === "deposit"}
+            activeColor="green"
+          >
+            <img src={incomeImg} alt="Entrada" />
+            <span>Entrada</span>
+          </RadioBox>
+
+          <RadioBox
+            type="button"
+            onClick={() => setType("withdraw")}
+            isActive={type === "withdraw"}
+            activeColor="red"
+          >
+            <img src={outcomeImg} alt="Saída" />
+            <span>Saída</span>
+          </RadioBox>
+        </TransactionTypeContainer>
+
+        <input
+          type="text"
+          name="Categoria"
+          placeholder="Categoria"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
         <button type="submit">Cadastrar</button>
       </Container>
     </Modal>
   );
 }
 
-//Perceba que eu tive que passar a váriavel do estado com o tipo boolean, pois eu startei o estado dela como false , sendo assim , o typeScript utilizou tipagem explicita, ou seja => boolean
+//Boa prática para botões => se voce quiser da um nome a uma imagem ou icone dentro do botão, coloque a imagem dentro do botão e depois coloque um span com o nome que você deseja que seja colocado
 
-//Porque que estas funções de fechar e abrir modal , ela não fica diretamente neste arquivo de modal ? pq por exemplo a função de abrir o modal que esta sendo passada no cabeçalho , ela nao poderia ser enviada daqui por props , se isso acontecesse a gente teria que utilizar uma propriedade no react que se chama contexto e valeria muito mais a pena neste caso utilizar props
-
-//Nos vamos ter que estilizar o modal, como transformar o modal com um tamanho fixo no centro da tela , para nao ocupar a tela toda, arrendondar bordas , colocar um overlay mais escuro atrás(A gente consegue fazer isso de algumas formas)
-
-// As formas => na documentação do react-modal nos conseguimos ver as formas de estilizaçoes em style, tanto o overlay, como o conteúdo de dentro(O overlay é a parte de trás) o formato do estilo tem na documentação
-//Tmabem posso estilizar por classes
-
-//Optei pela forma de dar um overlayClassName e um className , uma para estilização do overlay e outra para a estilização do conteudo a minha  maneira
+//Passos para trabalhar com um formulário => Abaixo
+//1-colocar o preventDeafault para previnir o comportamento de sempre enviar o formulário(Função de onsubmit no form)
+//2-definir a propriedade value de cada input, com o estado que vai armazenar que foi criado(Os estados são criados fora da função)
+//3-Colocar a função onChange dentro de cada input(que a função que executa sempre que for digitado algum texto dentro do input) para pegar o valor através do e.target.value
+//4-Da um set passando o valor digitado value dentro do useState
+//5-Perceba que o e.target.value não é adimitido ser passado como number , tem que ser string(e.target.value sempre vai retornar em texto) mesmo que o input seja do tipo number, tenho que converter aquele value para number
+//6-Para converter o valor do input para number eu posso(Number(e.target.value) ou parseInt(e.target.value) ou (+e.target.value))

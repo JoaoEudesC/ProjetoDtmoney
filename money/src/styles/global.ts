@@ -66,7 +66,7 @@ button{
     cursor:not-allowed;   //Todo elemento disabled na nossa aplicação vai ficar transparente, e vai aparecer a mensagem not-allowed
 }
 
-
+    
 `
 
 
