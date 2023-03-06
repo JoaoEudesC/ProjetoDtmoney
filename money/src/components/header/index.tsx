@@ -1,4 +1,7 @@
-import { useState } from "react";
+//Este é o header da minha aplicação , ou seja, Criei um componente para ele pq provavelmente vou utilizar ele em outras partes do meu código tbm, sendo assim eu tenho um botão no meu header que vai executar a função de abrir o modal.
+//O botão que vai abrir o modal, precisa de uma função de click , e esta função esta sendo criada la no app.tsx e passada para esse componente via props e o modal foi criado um componente para ele separadamente e esta sendo passado no app.tsx
+//Aqui no meu Header eu possuo duas divs , uma dentro da outra para que eu possa posicionar elementos de forma melhor , como a minha logo e o titulo e dentro ter tresBlocos
+
 import logo from "../../Assets/logo.svg";
 import { Container } from "./styles";
 import { Content } from "./styles";
