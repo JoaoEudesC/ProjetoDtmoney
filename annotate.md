@@ -53,3 +53,9 @@
 ## 9 - Resumindo => com o contexto eu consigo acessar informações de vários niveis da minha aplicação independente do nivel hierarquico que eles estejam na aplicação.
 
 ## 10- nos possuimos duas formas principais de compartilhar informações no react(podemos passar o estado para o elemento pai, para que ele seja compartilhado entre elementos filhos que é o que fizemos para acessar o modal no botão do header e no transactionModal) e podemos utilizar o "Contexto" => que é quando queremos passar informações são de forma mais complexa ou quando aquela informção parece não esta no lugar certo, que é como seria o caso do compartilhamento da nossa api(Nos podemos retornar qualquer tipo de dados em um contexto seja ele , array , função entre outros dados)
+
+## Obs => Numa função relacionada a api a gente tem que passar async e await, como é o caso de que eu só quero fechar o modal apos o envio de formulário , se o post for bem sucedido, ou seja, eu tenho que colocar um async e await, todas as funções de post geralmente é assim
+
+##CRIAÇÃO DE PRÓPRIO HOOK:
+
+## 11 - Criação do nosso próprio hook => pq quando vamos utilizar o nosso contexto, nos temos que importar o nosso "useContext" e importar o nosso "Contexto" tbm, com esse hook que a gente vai reduzir estas duas linhas de importação nos nossos componentes.

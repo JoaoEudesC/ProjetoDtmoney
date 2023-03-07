@@ -3,14 +3,11 @@
 //Como é o caso de fechar o modal quando clicar fora dele , e tbm passar esta função para a minha imagem de "x" para fechar o modal
 //E passar a função isOpen (que é o estado do modal aberto ou não) que diretamente o estado ou não que começa em falso pq ele é fechado
 
-//Importação do context e componentes
-import { TransactionsContext } from "../../TransactionsContext";
+//Importação do context e componentes E HOOKS
+import { useTransactions } from "../hooks/useTransactions";
 
 //Importação do modal
 import Modal from "react-modal";
-
-//Importação da api
-import { api } from "../../services/api";
 
 //Importação de estilos
 import { Container, TransactionTypeContainer, RadioBox } from "./style";
@@ -22,8 +19,7 @@ import closeImage from "../../Assets/close.svg";
 
 //Importação de Hooks
 
-import { FormEvent, useState, useContext } from "react";
-import { on } from "events";
+import { FormEvent, useState } from "react";
 
 //Criação de interface
 interface modal {
@@ -43,7 +39,7 @@ export function NewTransactionModal({
 
   //Utilização do contexto
 
-  const { createTransaction } = useContext(TransactionsContext);
+  const { createTransaction } = useTransactions();
 
   async function handleCreateNewTransaction(e: FormEvent) {
     e.preventDefault();

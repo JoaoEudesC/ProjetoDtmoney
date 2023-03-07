@@ -5,7 +5,7 @@ import { GlobalStyle } from "./styles/global";
 import { NewTransactionModal } from "./components/NewTransactionModal";
 
 //Importação de contexto
-import { TransactionsProvider } from "./TransactionsContext";
+import { TransactionsProvider } from "./components/hooks/useTransactions";
 
 //Hooks
 import { useState } from "react";

@@ -6,15 +6,14 @@
 //Estou importando a api , do arquivo services onde eu criei uma api fake e estou renderizando ela e montando ela no arquivo index.tsx, motando a estrutura e já , colocando o formato e preenchendo o "banco de dados" com alguns dados , para que eu possa trabalhar com esta api de uma forma mais amigável
 
 //Hooks
-import { useContext } from "react";
+import { useTransactions } from "../hooks/useTransactions";
 
 //Importação de componentes
 import { Container } from "./styles";
-import { TransactionsContext } from "../../TransactionsContext";
 
 export function TrasactionTable() {
   //Aqui eu vou ter que criar um estado para que eu possa listar aquilo que está salvo no banco de dados wm tela
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useTransactions();
   return (
     <Container>
       <table>
@@ -32,14 +31,14 @@ export function TrasactionTable() {
               <tr key={transaction.id}>
                 <td>{transaction.title}</td>
                 <td className={transaction.type}>
-                  {new Intl.NumberFormat("pt-BR", {
+                  {new Intl.NumberFormat("EUR", {
                     style: "currency",
-                    currency: "BRL",
+                    currency: "EUR",
                   }).format(transaction.amount)}
                 </td>
                 <td>{transaction.category}</td>
                 <td>
-                  {new Intl.DateTimeFormat("pt-BR").format(
+                  {new Intl.DateTimeFormat("EUR").format(
                     new Date(transaction.createdAt)
                   )}
                 </td>

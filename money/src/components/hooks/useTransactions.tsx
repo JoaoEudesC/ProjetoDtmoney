@@ -1,10 +1,16 @@
 //Esta é a forma mais simples de se criar um contexto no react, visto que eu vou colocar uma lista de saidas e entradas eu inicializei ele como uma arrya vazio
 
 //Importação de hooks
-import { createContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useContext,
+} from "react";
 
 //Importação da api
-import { api } from "./services/api";
+import { api } from "../../services/api";
 
 //Criação de interface(para o verbo get, para pegar os elementos)
 interface Transaction {
@@ -38,7 +44,7 @@ interface TransactionsContextData {
 }
 
 //Criação de contexto
-export const TransactionsContext = createContext<TransactionsContextData>(
+const TransactionsContext = createContext<TransactionsContextData>(
   {} as TransactionsContextData
 );
 
@@ -83,6 +89,13 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
   );
 }
 
+//Criação de hooke próprio, para substituir as linhas de importação de context e "useContext" os hooks no react podem sempre consumir de outros hooks
+//O "transactionContext" não precisa estar mais em uma váriavel export, visto que não vou exportar mais ele diretamente
+export function useTransactions() {
+  const context = useContext(TransactionsContext);
+  return context;
+}
+
 //Para que eu possa fazer com que todos os meus componentes possam acessar as informações deste contexto , eu tenho que Promover um "provider" e um "consumer" ao redor dele(Que vem neste caso do TransactionsContext)
 //Ou seja, se eu quiser que todos os meus componentes possam utilizar estas informações , eu posso ir no app.tsx e envolver todo o contéudo por uma tag Chamada "TransactionContext.Provider" que eu vou exportar daqui e importar lá
 //A gente pode restringir , quais componentes a gente quer que tenham acesso a estas informações do contexto, passando apenas o Contexto em volta dos componentes que a gente quer que tenham acesso a esta informações.(Neste caso passei em volta de todos os componentes então todos os componentes vão poder ter acesso a esta informações)
@@ -124,3 +137,12 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
 //10 - Agora aquele conexto na função de create context. vai recebr esta interface como tipagem e não mais (<Transaction>[]) pq ela não é somente mais um array de transactions, mas tbm uma função.
 //11 - não passo mais ele como um array , passo so a tipagem <> e depois um "alias" para corrigir o bug ({} as TransactionsContextData) para forçar a tipagem
 //12 - Quando uma função minha é assicrona, ela deve ser tipada no javscript como uma "Promise" (Promise<void>)
+
+//Transformação dete Contexto em um hook próprio => passo a passo
+
+//1 - movi este arquiv para dentro de uma pasta hook
+//2 - troquei o nome dele para que comece com "use" , pq todo hook começa com hook "useTransactions"
+//3 - intuito => quero reduzir as linhas do meu codigo em que eu utilizo o contexto, ou seja , a importação do contexto e o useContext
+//4 - O "transactionContext" não precisa estar mais em uma váriavel export, visto que não vou exportar mais ele diretamente
+//5 - só preciso agora do meu transactionContext para que importe no meu app.tsx, e o meu useTrasactions para que eu use nos componentes aonde eu quero utilizar as minha transações.
+//6 - agora posso remover a importação do contexto, o useContext e substituir pelo meu hook (useTransactions())
